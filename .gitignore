@@ -1,0 +1,14 @@
+target/
+log/
+.classpath
+.settings/
+.gradle
+report.json
+**/.settings/
+**/bin/
+**/build/
+.idea
+*.iml
+**/out/
+*.retry
+logs/

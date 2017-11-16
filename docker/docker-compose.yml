@@ -1,0 +1,76 @@
+version: '2'
+
+services:
+    zookeeper:
+        image: zookeeper
+        container_name: zookeeper
+        restart: always
+
+    nimbus:
+        image: storm:1.1.1
+        container_name: nimbus
+        command: storm nimbus
+        depends_on:
+            - zookeeper
+        links:
+            - zookeeper
+        restart: always
+        ports:
+            - 6627:6627
+
+    supervisor1:
+        image: storm:1.1.1
+        container_name: supervisor1
+        command: storm supervisor
+        depends_on:
+            - nimbus
+            - zookeeper
+        links:
+            - nimbus
+            - zookeeper
+        restart: always
+
+    supervisor2:
+        image: storm:1.1.1
+        container_name: supervisor2
+        command: storm supervisor
+        depends_on:
+            - nimbus
+            - zookeeper
+        links:
+            - nimbus
+            - zookeeper
+        restart: always
+
+    ui:
+        image: storm:1.1.1
+        container_name: ui
+        command: storm ui
+        depends_on:
+            - nimbus
+            - zookeeper
+        links:
+            - nimbus
+            - zookeeper
+        restart: always
+        ports:
+            - 8080:8080
+
+    redis:
+      image: redis
+      ports:
+        - "6379:6379"
+
+    webviewer:
+      image: "node:alpine"
+      depends_on:
+        - redis
+      user: "node"
+      working_dir: /home/node/app
+      environment:
+        - NODE_ENV=production
+      volumes:
+        - ../web/:/home/node/app
+      ports:
+        - "8001:8001"
+      command: "npm start"

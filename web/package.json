@@ -1,0 +1,14 @@
+{
+  "name": "wordcount.viewer",
+  "version": "1.0.0",
+  "description": "Retrieves top 10 words from Redis",
+  "author": "Waatze Goldewijk",
+  "main": "commonwords.js",
+  "scripts": {
+    "start": "node commonwords.js"
+  },
+  "dependencies": {
+    "redis": "^2.8.0",
+    "start": "^5.1.0"
+  }
+}
